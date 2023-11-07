@@ -1,0 +1,85 @@
+
+Q1. What is MongoDB? Explain non-relational databases in short. In which scenarios it is preferred to use MongoDB over SQL databases?
+
+MongoDB is a document oriented NoSQL database it can store the data in a dictionary or json format. In a database it consists of Collection in which all the documents are stored. It's easy in building mordern, data-driven application which can hold large volume of data.
+
+Non-Relational Database - These database stores data in a non-tabular like structure, like document or json format. These are often used when large volume or complex data is needed to organize. Instead of Representing the data in tabular form it present it in document which is more flexible and readable for the users.
+
+Scenarios when MongoDB is considered over SQL :-
+
+When the size of data is large it prefered to use MongoDB because of its flexibility and document like structure which is more understandable.
+MongoDB's document-based data model allows for flexible storage of data in various formats, including semi-structured and unstructured data.
+It takes less time to process a Query because of its non-tabular form which takes less time to represent the data.
+Q2. State and Explain the features of MongoDB.
+
+Features of MongoDB : -
+
+It uses a document-based data model to store data as it is highly flexible which allows storing the data is various format.
+It support flexibility in query processing and indexing of data for faster and efficient way of retriving of data for complex queries.
+It automatically manages the data distribution across multiple servers making it easy when the volume of data increases.
+It provides a rich query language that supports advanced query features such as ad-hoc queries, indexing, sorting, and projection.
+Q3. Write a code to connect MongoDB to Python. Also, create a database and a collection in MongoDB.
+
+import pymongo
+# Connecting MongoDB to Python
+client = pymongo.MongoClient("mongodb+srv://gaurabh:password1234@cluster0.vhy4q5q.mongodb.net/?retryWrites=true&w=majority") 
+# Creating a Database
+DB = client['HMS']
+# Creating a Collection
+collections = DB['Guests Record']
+Q4. Using the database and the collection created in question number 3, write a code to insert one record, and insert many records. Use the find() and find_one() methods to print the inserted record.
+
+guest1 = {
+    'Name':'Willam',
+    'Room type' : 'AC',
+    'Room no' : 164
+}
+collections.insert_one(guest1)
+<pymongo.results.InsertOneResult at 0x28714adc970>
+guests = [
+    {'Name':'Amy','Room type':'AC','Room no':103},
+    {'Name':'Sandy','Room type':'Non-AC','Room no':104},
+    {'Name':'Richard','Room type':'AC','Room no':105},
+    {'Name':'Ben','Room type':'Non-AC','Room no':106}
+]
+collections.insert_many(guests)
+<pymongo.results.InsertManyResult at 0x28714f8c430>
+for i in collections.find():
+    print(i)
+{'_id': ObjectId('640214d455d7c5f5ee95c164'), 'Name': 'Willam', 'Room type': 'AC', 'Room no': 164}
+{'_id': ObjectId('640214d855d7c5f5ee95c165'), 'Name': 'Amy', 'Room type': 'AC', 'Room no': 103}
+{'_id': ObjectId('640214d855d7c5f5ee95c166'), 'Name': 'Sandy', 'Room type': 'Non-AC', 'Room no': 104}
+{'_id': ObjectId('640214d855d7c5f5ee95c167'), 'Name': 'Richard', 'Room type': 'AC', 'Room no': 105}
+{'_id': ObjectId('640214d855d7c5f5ee95c168'), 'Name': 'Ben', 'Room type': 'Non-AC', 'Room no': 106}
+for i in collections.find_one():
+    print(i)
+_id
+Name
+Room type
+Room no
+Q5. Explain how you can use the find() method to query the MongoDB database. Write a simple code to demonstrate this.
+
+.find() :- This method is used to find a particular record from the database. It takes input as what record we have to find as parameters and returns the matching records.
+
+for i in collections.find({'Room no':104}):
+    print(i)
+{'_id': ObjectId('640214d855d7c5f5ee95c166'), 'Name': 'Sandy', 'Room type': 'Non-AC', 'Room no': 104}
+Q6. Explain the sort() method. Give an example to demonstrate sorting in MongoDB.
+
+.sort():- This method specifies the order in which the query will return the records form the database. It takes a document as a parameter containing a field on which sorting is done whether ascending or descending order.
+
+for i in collections.find().sort("Room no",1):
+    print(i)
+{'_id': ObjectId('640214d855d7c5f5ee95c165'), 'Name': 'Amy', 'Room type': 'AC', 'Room no': 103}
+{'_id': ObjectId('640214d855d7c5f5ee95c166'), 'Name': 'Sandy', 'Room type': 'Non-AC', 'Room no': 104}
+{'_id': ObjectId('640214d855d7c5f5ee95c167'), 'Name': 'Richard', 'Room type': 'AC', 'Room no': 105}
+{'_id': ObjectId('640214d855d7c5f5ee95c168'), 'Name': 'Ben', 'Room type': 'Non-AC', 'Room no': 106}
+{'_id': ObjectId('640214d455d7c5f5ee95c164'), 'Name': 'Willam', 'Room type': 'AC', 'Room no': 164}
+Q7. Explain why delete_one(), delete_many(), and drop() is used.
+
+delete_one() - This method is used to delete a single document which is specified in the parameter list. When the filter matches the document it is permanently deleted from the database.
+
+delete_many() - This method deletes the documents which is passed as a parameter in the filter. It can be more than one document.
+
+drop() - This method Permanently deletes all the document form the database.
+
